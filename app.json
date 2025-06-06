@@ -3,6 +3,9 @@
     "name": "movieApp",
     "slug": "movieApp",
     "version": "1.0.0",
+    "extra": {
+      "TMDB_API_KEY": "your_api_key_here"
+    },
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "movieapp",

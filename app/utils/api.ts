@@ -1,4 +1,6 @@
-const API_KEY = '917e9d3f5672a947963d16baa979176f';
+
+import Constants from 'expo-constants';
+const API_KEY = Constants.expoConfig?.extra?.TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 export const fetchData = async (path: string) => {
