@@ -1,45 +1,71 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+// import { Tabs } from 'expo-router';
+// import { Ionicons } from '@expo/vector-icons';
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { withLayoutContext } from 'expo-router';
+import { View, StyleSheet, Text } from 'react-native';
+
+const { Navigator } = createMaterialTopTabNavigator();
+
+const TopTabs = withLayoutContext(Navigator);
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  // const colorScheme = useColorScheme();
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-    </Tabs>
+    // <Tabs>
+    //   <Tabs.Screen
+    //     name="index"
+    //     options={{
+    //       title: 'Home',
+    //       tabBarIcon: ({ color, size }) => (
+    //         <Ionicons name="home-outline" size={size} color={color} />
+    //       ),
+    //     }}
+    //   />
+    //   <Tabs.Screen
+    //     name="movies"
+    //     options={{
+    //       title: 'Movies',
+    //       tabBarIcon: ({ color, size }) => (
+    //         <Ionicons name="film-outline" size={size} color={color} />
+    //       ),
+    //     }}
+    //   />
+    //   <Tabs.Screen
+    //     name="profile"
+    //     options={{
+    //       title: 'Profile',
+    //       tabBarIcon: ({ color, size }) => (
+    //         <Ionicons name="person-outline" size={size} color={color} />
+    //       ),
+    //     }}
+    //   />
+    // </Tabs>
+    <View style={{ flex: 1 }}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>MOVIE APP</Text>
+      
+    </View>
+    <TopTabs>
+    <TopTabs.Screen name="index" options={{ title: 'Movies' }} />
+    <TopTabs.Screen name="searchResults" options={{ title: 'Search Results' }} />
+    <TopTabs.Screen name="tvShows" options={{ title: 'TV Shows' }} />
+  </TopTabs>
+  </View>
   );
 }
+
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: '#1D3D47',
+    paddingTop: 50, // for status bar spacing
+    paddingBottom: 16,
+    alignItems: 'center',
+  },
+  headerText: {
+    color: 'white',
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+});

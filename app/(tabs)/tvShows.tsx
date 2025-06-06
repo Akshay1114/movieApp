@@ -1,33 +1,31 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { View, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import { fetchData } from '../utils/api';
 import MediaItem from '../../components/MediaItem';
-import Dropdown from '../../components/Dropdown'; // ✅ Import reusable Dropdown
+import Dropdown from '../../components/Dropdown';
 
-export default function HomeScreen() {
+export default function TvShows() {
   const [open, setOpen] = useState(false);
-  const [category, setCategory] = useState('now_playing');
+  const [category, setCategory] = useState('airing_today');
   const [items, setItems] = useState([
-    { label: 'Now Playing', value: 'now_playing' },
+    { label: 'Airing Today', value: 'airing_today' },
+    { label: 'On The Air', value: 'on_the_air' },
     { label: 'Popular', value: 'popular' },
     { label: 'Top Rated', value: 'top_rated' },
-    { label: 'Upcoming', value: 'upcoming' },
   ]);
 
-  const [movies, setMovies] = useState([]);
+  const [shows, setShows] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
-    fetchData(`/movie/${category}`)
-      .then(data => setMovies(data.results || []))
+    fetchData(`/tv/${category}`)
+      .then(data => setShows(data.results || []))
       .finally(() => setLoading(false));
   }, [category]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Movies</Text>
-
       <Dropdown
         open={open}
         setOpen={setOpen}
@@ -37,13 +35,11 @@ export default function HomeScreen() {
         setItems={setItems}
       />
 
-      {loading ? (
-        <ActivityIndicator size="large" style={{ marginTop: 20 }} />
-      ) : (
+      {loading ? <ActivityIndicator size="large" /> : (
         <FlatList
-          data={movies}
+          data={shows}
           keyExtractor={item => item.id.toString()}
-          renderItem={({ item }) => <MediaItem item={item} type="movie" />}
+          renderItem={({ item }) => <MediaItem item={item} type="tv" />}
         />
       )}
     </View>
@@ -52,12 +48,7 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    padding: 10,
     flex: 1,
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 10,
   },
 });
